@@ -10,16 +10,26 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ContatoRouteImport } from './routes/contato'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as FuncoesRouteImport } from './routes/funcoes'
 import { Route as IntegracoesRouteImport } from './routes/integracoes'
 import { Route as PlanosRouteImport } from './routes/planos'
+import { Route as AuthenticatedPainelRouteImport } from './routes/_authenticated/painel'
+import { Route as AuthenticatedPainelIndexRouteImport } from './routes/_authenticated/painel.index'
+import { Route as AuthenticatedPainelConexoesRouteImport } from './routes/_authenticated/painel.conexoes'
+import { Route as AuthenticatedPainelContatosRouteImport } from './routes/_authenticated/painel.contatos'
+import { Route as AuthenticatedPainelConversasRouteImport } from './routes/_authenticated/painel.conversas'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -52,6 +62,35 @@ const PlanosRoute = PlanosRouteImport.update({
   path: '/planos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedPainelRoute = AuthenticatedPainelRouteImport.update({
+  id: '/painel',
+  path: '/painel',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPainelIndexRoute =
+  AuthenticatedPainelIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
+const AuthenticatedPainelConexoesRoute =
+  AuthenticatedPainelConexoesRouteImport.update({
+    id: '/conexoes',
+    path: '/conexoes',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
+const AuthenticatedPainelContatosRoute =
+  AuthenticatedPainelContatosRouteImport.update({
+    id: '/contatos',
+    path: '/contatos',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
+const AuthenticatedPainelConversasRoute =
+  AuthenticatedPainelConversasRouteImport.update({
+    id: '/conversas',
+    path: '/conversas',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -61,6 +100,11 @@ export interface FileRoutesByFullPath {
   '/funcoes': typeof FuncoesRoute
   '/integracoes': typeof IntegracoesRoute
   '/planos': typeof PlanosRoute
+  '/painel': typeof AuthenticatedPainelRouteWithChildren
+  '/painel/conexoes': typeof AuthenticatedPainelConexoesRoute
+  '/painel/contatos': typeof AuthenticatedPainelContatosRoute
+  '/painel/conversas': typeof AuthenticatedPainelConversasRoute
+  '/painel/': typeof AuthenticatedPainelIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -70,16 +114,26 @@ export interface FileRoutesByTo {
   '/funcoes': typeof FuncoesRoute
   '/integracoes': typeof IntegracoesRoute
   '/planos': typeof PlanosRoute
+  '/painel/conexoes': typeof AuthenticatedPainelConexoesRoute
+  '/painel/contatos': typeof AuthenticatedPainelContatosRoute
+  '/painel/conversas': typeof AuthenticatedPainelConversasRoute
+  '/painel': typeof AuthenticatedPainelIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/contato': typeof ContatoRoute
   '/faq': typeof FaqRoute
   '/funcoes': typeof FuncoesRoute
   '/integracoes': typeof IntegracoesRoute
   '/planos': typeof PlanosRoute
+  '/_authenticated/painel': typeof AuthenticatedPainelRouteWithChildren
+  '/_authenticated/painel/conexoes': typeof AuthenticatedPainelConexoesRoute
+  '/_authenticated/painel/contatos': typeof AuthenticatedPainelContatosRoute
+  '/_authenticated/painel/conversas': typeof AuthenticatedPainelConversasRoute
+  '/_authenticated/painel/': typeof AuthenticatedPainelIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,6 +145,11 @@ export interface FileRouteTypes {
     | '/funcoes'
     | '/integracoes'
     | '/planos'
+    | '/painel'
+    | '/painel/conexoes'
+    | '/painel/contatos'
+    | '/painel/conversas'
+    | '/painel/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -100,19 +159,30 @@ export interface FileRouteTypes {
     | '/funcoes'
     | '/integracoes'
     | '/planos'
+    | '/painel/conexoes'
+    | '/painel/contatos'
+    | '/painel/conversas'
+    | '/painel'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/auth'
     | '/contato'
     | '/faq'
     | '/funcoes'
     | '/integracoes'
     | '/planos'
+    | '/_authenticated/painel'
+    | '/_authenticated/painel/conexoes'
+    | '/_authenticated/painel/contatos'
+    | '/_authenticated/painel/conversas'
+    | '/_authenticated/painel/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ContatoRoute: typeof ContatoRoute
   FaqRoute: typeof FaqRoute
@@ -128,6 +198,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -172,11 +249,75 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlanosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/painel': {
+      id: '/_authenticated/painel'
+      path: '/painel'
+      fullPath: '/painel'
+      preLoaderRoute: typeof AuthenticatedPainelRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/painel/': {
+      id: '/_authenticated/painel/'
+      path: '/'
+      fullPath: '/painel/'
+      preLoaderRoute: typeof AuthenticatedPainelIndexRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
+    '/_authenticated/painel/conexoes': {
+      id: '/_authenticated/painel/conexoes'
+      path: '/conexoes'
+      fullPath: '/painel/conexoes'
+      preLoaderRoute: typeof AuthenticatedPainelConexoesRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
+    '/_authenticated/painel/contatos': {
+      id: '/_authenticated/painel/contatos'
+      path: '/contatos'
+      fullPath: '/painel/contatos'
+      preLoaderRoute: typeof AuthenticatedPainelContatosRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
+    '/_authenticated/painel/conversas': {
+      id: '/_authenticated/painel/conversas'
+      path: '/conversas'
+      fullPath: '/painel/conversas'
+      preLoaderRoute: typeof AuthenticatedPainelConversasRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
   }
 }
 
+interface AuthenticatedPainelRouteChildren {
+  AuthenticatedPainelConexoesRoute: typeof AuthenticatedPainelConexoesRoute
+  AuthenticatedPainelContatosRoute: typeof AuthenticatedPainelContatosRoute
+  AuthenticatedPainelConversasRoute: typeof AuthenticatedPainelConversasRoute
+  AuthenticatedPainelIndexRoute: typeof AuthenticatedPainelIndexRoute
+}
+
+const AuthenticatedPainelRouteChildren: AuthenticatedPainelRouteChildren = {
+  AuthenticatedPainelConexoesRoute: AuthenticatedPainelConexoesRoute,
+  AuthenticatedPainelContatosRoute: AuthenticatedPainelContatosRoute,
+  AuthenticatedPainelConversasRoute: AuthenticatedPainelConversasRoute,
+  AuthenticatedPainelIndexRoute: AuthenticatedPainelIndexRoute,
+}
+
+const AuthenticatedPainelRouteWithChildren =
+  AuthenticatedPainelRoute._addFileChildren(AuthenticatedPainelRouteChildren)
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedPainelRoute: typeof AuthenticatedPainelRouteWithChildren
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedPainelRoute: AuthenticatedPainelRouteWithChildren,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ContatoRoute: ContatoRoute,
   FaqRoute: FaqRoute,
