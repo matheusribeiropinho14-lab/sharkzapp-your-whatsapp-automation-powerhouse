@@ -19,6 +19,8 @@ import { Route as IntegracoesRouteImport } from './routes/integracoes'
 import { Route as PlanosRouteImport } from './routes/planos'
 import { Route as AuthenticatedPainelRouteImport } from './routes/_authenticated/painel'
 import { Route as AuthenticatedPainelIndexRouteImport } from './routes/_authenticated/painel.index'
+import { Route as AuthenticatedPainelConexoesRouteImport } from './routes/_authenticated/painel.conexoes'
+import { Route as AuthenticatedPainelContatosRouteImport } from './routes/_authenticated/painel.contatos'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -70,6 +72,18 @@ const AuthenticatedPainelIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedPainelRoute,
   } as any)
+const AuthenticatedPainelConexoesRoute =
+  AuthenticatedPainelConexoesRouteImport.update({
+    id: '/conexoes',
+    path: '/conexoes',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
+const AuthenticatedPainelContatosRoute =
+  AuthenticatedPainelContatosRouteImport.update({
+    id: '/contatos',
+    path: '/contatos',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -80,6 +94,8 @@ export interface FileRoutesByFullPath {
   '/integracoes': typeof IntegracoesRoute
   '/planos': typeof PlanosRoute
   '/painel': typeof AuthenticatedPainelRouteWithChildren
+  '/painel/conexoes': typeof AuthenticatedPainelConexoesRoute
+  '/painel/contatos': typeof AuthenticatedPainelContatosRoute
   '/painel/': typeof AuthenticatedPainelIndexRoute
 }
 export interface FileRoutesByTo {
@@ -90,6 +106,8 @@ export interface FileRoutesByTo {
   '/funcoes': typeof FuncoesRoute
   '/integracoes': typeof IntegracoesRoute
   '/planos': typeof PlanosRoute
+  '/painel/conexoes': typeof AuthenticatedPainelConexoesRoute
+  '/painel/contatos': typeof AuthenticatedPainelContatosRoute
   '/painel': typeof AuthenticatedPainelIndexRoute
 }
 export interface FileRoutesById {
@@ -103,6 +121,8 @@ export interface FileRoutesById {
   '/integracoes': typeof IntegracoesRoute
   '/planos': typeof PlanosRoute
   '/_authenticated/painel': typeof AuthenticatedPainelRouteWithChildren
+  '/_authenticated/painel/conexoes': typeof AuthenticatedPainelConexoesRoute
+  '/_authenticated/painel/contatos': typeof AuthenticatedPainelContatosRoute
   '/_authenticated/painel/': typeof AuthenticatedPainelIndexRoute
 }
 export interface FileRouteTypes {
@@ -116,6 +136,8 @@ export interface FileRouteTypes {
     | '/integracoes'
     | '/planos'
     | '/painel'
+    | '/painel/conexoes'
+    | '/painel/contatos'
     | '/painel/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -126,6 +148,8 @@ export interface FileRouteTypes {
     | '/funcoes'
     | '/integracoes'
     | '/planos'
+    | '/painel/conexoes'
+    | '/painel/contatos'
     | '/painel'
   id:
     | '__root__'
@@ -138,6 +162,8 @@ export interface FileRouteTypes {
     | '/integracoes'
     | '/planos'
     | '/_authenticated/painel'
+    | '/_authenticated/painel/conexoes'
+    | '/_authenticated/painel/contatos'
     | '/_authenticated/painel/'
   fileRoutesById: FileRoutesById
 }
@@ -224,14 +250,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPainelIndexRouteImport
       parentRoute: typeof AuthenticatedPainelRoute
     }
+    '/_authenticated/painel/conexoes': {
+      id: '/_authenticated/painel/conexoes'
+      path: '/conexoes'
+      fullPath: '/painel/conexoes'
+      preLoaderRoute: typeof AuthenticatedPainelConexoesRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
+    '/_authenticated/painel/contatos': {
+      id: '/_authenticated/painel/contatos'
+      path: '/contatos'
+      fullPath: '/painel/contatos'
+      preLoaderRoute: typeof AuthenticatedPainelContatosRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
   }
 }
 
 interface AuthenticatedPainelRouteChildren {
+  AuthenticatedPainelConexoesRoute: typeof AuthenticatedPainelConexoesRoute
+  AuthenticatedPainelContatosRoute: typeof AuthenticatedPainelContatosRoute
   AuthenticatedPainelIndexRoute: typeof AuthenticatedPainelIndexRoute
 }
 
 const AuthenticatedPainelRouteChildren: AuthenticatedPainelRouteChildren = {
+  AuthenticatedPainelConexoesRoute: AuthenticatedPainelConexoesRoute,
+  AuthenticatedPainelContatosRoute: AuthenticatedPainelContatosRoute,
   AuthenticatedPainelIndexRoute: AuthenticatedPainelIndexRoute,
 }
 
