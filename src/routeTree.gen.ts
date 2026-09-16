@@ -19,6 +19,7 @@ import { Route as IntegracoesRouteImport } from './routes/integracoes'
 import { Route as PlanosRouteImport } from './routes/planos'
 import { Route as AuthenticatedPainelRouteImport } from './routes/_authenticated/painel'
 import { Route as AuthenticatedPainelIndexRouteImport } from './routes/_authenticated/painel.index'
+import { Route as AuthenticatedPainelCampanhasRouteImport } from './routes/_authenticated/painel.campanhas'
 import { Route as AuthenticatedPainelConexoesRouteImport } from './routes/_authenticated/painel.conexoes'
 import { Route as AuthenticatedPainelContatosRouteImport } from './routes/_authenticated/painel.contatos'
 import { Route as AuthenticatedPainelConversasRouteImport } from './routes/_authenticated/painel.conversas'
@@ -73,6 +74,12 @@ const AuthenticatedPainelIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedPainelRoute,
   } as any)
+const AuthenticatedPainelCampanhasRoute =
+  AuthenticatedPainelCampanhasRouteImport.update({
+    id: '/campanhas',
+    path: '/campanhas',
+    getParentRoute: () => AuthenticatedPainelRoute,
+  } as any)
 const AuthenticatedPainelConexoesRoute =
   AuthenticatedPainelConexoesRouteImport.update({
     id: '/conexoes',
@@ -101,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/integracoes': typeof IntegracoesRoute
   '/planos': typeof PlanosRoute
   '/painel': typeof AuthenticatedPainelRouteWithChildren
+  '/painel/campanhas': typeof AuthenticatedPainelCampanhasRoute
   '/painel/conexoes': typeof AuthenticatedPainelConexoesRoute
   '/painel/contatos': typeof AuthenticatedPainelContatosRoute
   '/painel/conversas': typeof AuthenticatedPainelConversasRoute
@@ -114,6 +122,7 @@ export interface FileRoutesByTo {
   '/funcoes': typeof FuncoesRoute
   '/integracoes': typeof IntegracoesRoute
   '/planos': typeof PlanosRoute
+  '/painel/campanhas': typeof AuthenticatedPainelCampanhasRoute
   '/painel/conexoes': typeof AuthenticatedPainelConexoesRoute
   '/painel/contatos': typeof AuthenticatedPainelContatosRoute
   '/painel/conversas': typeof AuthenticatedPainelConversasRoute
@@ -130,6 +139,7 @@ export interface FileRoutesById {
   '/integracoes': typeof IntegracoesRoute
   '/planos': typeof PlanosRoute
   '/_authenticated/painel': typeof AuthenticatedPainelRouteWithChildren
+  '/_authenticated/painel/campanhas': typeof AuthenticatedPainelCampanhasRoute
   '/_authenticated/painel/conexoes': typeof AuthenticatedPainelConexoesRoute
   '/_authenticated/painel/contatos': typeof AuthenticatedPainelContatosRoute
   '/_authenticated/painel/conversas': typeof AuthenticatedPainelConversasRoute
@@ -146,6 +156,7 @@ export interface FileRouteTypes {
     | '/integracoes'
     | '/planos'
     | '/painel'
+    | '/painel/campanhas'
     | '/painel/conexoes'
     | '/painel/contatos'
     | '/painel/conversas'
@@ -159,6 +170,7 @@ export interface FileRouteTypes {
     | '/funcoes'
     | '/integracoes'
     | '/planos'
+    | '/painel/campanhas'
     | '/painel/conexoes'
     | '/painel/contatos'
     | '/painel/conversas'
@@ -174,6 +186,7 @@ export interface FileRouteTypes {
     | '/integracoes'
     | '/planos'
     | '/_authenticated/painel'
+    | '/_authenticated/painel/campanhas'
     | '/_authenticated/painel/conexoes'
     | '/_authenticated/painel/contatos'
     | '/_authenticated/painel/conversas'
@@ -263,6 +276,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedPainelIndexRouteImport
       parentRoute: typeof AuthenticatedPainelRoute
     }
+    '/_authenticated/painel/campanhas': {
+      id: '/_authenticated/painel/campanhas'
+      path: '/campanhas'
+      fullPath: '/painel/campanhas'
+      preLoaderRoute: typeof AuthenticatedPainelCampanhasRouteImport
+      parentRoute: typeof AuthenticatedPainelRoute
+    }
     '/_authenticated/painel/conexoes': {
       id: '/_authenticated/painel/conexoes'
       path: '/conexoes'
@@ -288,6 +308,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedPainelRouteChildren {
+  AuthenticatedPainelCampanhasRoute: typeof AuthenticatedPainelCampanhasRoute
   AuthenticatedPainelConexoesRoute: typeof AuthenticatedPainelConexoesRoute
   AuthenticatedPainelContatosRoute: typeof AuthenticatedPainelContatosRoute
   AuthenticatedPainelConversasRoute: typeof AuthenticatedPainelConversasRoute
@@ -295,6 +316,7 @@ interface AuthenticatedPainelRouteChildren {
 }
 
 const AuthenticatedPainelRouteChildren: AuthenticatedPainelRouteChildren = {
+  AuthenticatedPainelCampanhasRoute: AuthenticatedPainelCampanhasRoute,
   AuthenticatedPainelConexoesRoute: AuthenticatedPainelConexoesRoute,
   AuthenticatedPainelContatosRoute: AuthenticatedPainelContatosRoute,
   AuthenticatedPainelConversasRoute: AuthenticatedPainelConversasRoute,
